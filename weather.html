@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
+<title>Weather Forcast</title>
+<body onload='getLocation()'>
+
+<script>
+var lat,lon;
+
+function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(getCurrentLocationWeather);
+    } else { 
+		alert('Geolocation is not supported by this browser');
+    }
+}
+
+function getCurrentLocationWeather(position) {
+	lat = position.coords.latitude;
+	lon = position.coords.longitude;
+	url = 'http://api.wunderground.com/api/5c0c8f11514256f9/geolookup/q/'+lat+','+lon+'.json';
+	var json_obj = JSON.parse(GetJsonData(url));
+	url = 'http://api.wunderground.com/api/5c0c8f11514256f9/forecast10day/q/CA/'+json_obj.location.city+'.json';
+	console.log(url);
+	var json_obj = JSON.parse(GetJsonData(url));
+	console.log(json_obj.forecast);
+	document.getElementById("day").innerHTML= json_obj.forecast.txt_forecast.forecastday[0].title;
+	document.getElementById("image").src = json_obj.forecast.txt_forecast.forecastday[0].icon_url;
+	document.getElementById("summery").innerHTML = json_obj.forecast.txt_forecast.forecastday[0].fcttext_metric;
+	document.getElementById("max_temp").innerHTML = json_obj.forecast.simpleforecast.forecastday[0].high.celsius+' &#8451;';
+	document.getElementById("low_temp").innerHTML = json_obj.forecast.simpleforecast.forecastday[0].low.celsius+' &#8451;';
+	document.getElementById("day2").innerHTML= json_obj.forecast.txt_forecast.forecastday[2].title;
+	document.getElementById("image2").src = json_obj.forecast.txt_forecast.forecastday[2].icon_url;
+	document.getElementById("summery2").innerHTML = json_obj.forecast.txt_forecast.forecastday[2].fcttext_metric;
+	document.getElementById("max_temp2").innerHTML = json_obj.forecast.simpleforecast.forecastday[2].high.celsius+' &#8451;';
+	document.getElementById("low_temp2").innerHTML = json_obj.forecast.simpleforecast.forecastday[2].low.celsius+' &#8451;';
+	document.getElementById("day3").innerHTML= json_obj.forecast.txt_forecast.forecastday[4].title;
+	document.getElementById("image3").src = json_obj.forecast.txt_forecast.forecastday[4].icon_url;
+	document.getElementById("summery3").innerHTML = json_obj.forecast.txt_forecast.forecastday[4].fcttext_metric;
+	document.getElementById("max_temp3").innerHTML = json_obj.forecast.simpleforecast.forecastday[4].high.celsius+' &#8451;';
+	document.getElementById("low_temp3").innerHTML = json_obj.forecast.simpleforecast.forecastday[4].low.celsius+' &#8451;';
+}
+
+function GetJsonData(url){
+    var Httpreq = new XMLHttpRequest();
+    Httpreq.open("GET",url,false);
+    Httpreq.send(null);
+    return Httpreq.responseText;          
+}
+</script>
+<div class="container" style="padding-top:20px">
+<div class="row">
+<div class="col col-md-4">
+<div class="alert alert-success">
+  <h4 class="alert-heading" id="day" style="text-align:center"></h4>
+  <hr>
+  <div style="float:center;text-align:center;min-height:150px">
+  <img id="image"/>
+  <p id="summery"></p>
+  </div>
+  <hr>
+  <div class="col col-md-12">
+  <h4 class="alert-heading" style="text-align:center">Temperature</h4>
+  <table class="table table-sm">
+  <thead>
+    <tr>
+      <th scope="col" style="text-align:center">Max</th>
+      <th scope="col" style="text-align:center">Min</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td id='max_temp' style="text-align:center"></td>
+      <td id='low_temp' style="text-align:center"></td>
+    </tr>
+  </tbody>
+  </table>
+  </div>
+</div>
+</div>
+
+
+<div class="col col-md-4">
+<div class="alert alert-info">
+  <h4 class="alert-heading" id="day2" style="text-align:center"></h4>
+  <hr>
+  <div style="float:center;text-align:center;min-height:150px">
+  <img id="image2"/>
+  <p id="summery2"></p>
+  </div>
+  <hr>
+  <div class="col col-md-12">
+  <h4 class="alert-heading" style="text-align:center">Temperature</h4>
+  <table class="table table-sm">
+  <thead>
+    <tr>
+      <th scope="col" style="text-align:center">Max</th>
+      <th scope="col" style="text-align:center">Min</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td id='max_temp2' style="text-align:center"></td>
+      <td id='low_temp2' style="text-align:center"></td>
+    </tr>
+  </tbody>
+  </table>
+  </div>
+</div>
+</div>
+
+
+<div class="col col-md-4">
+<div class="alert alert-success">
+  <h4 class="alert-heading" id="day3" style="text-align:center;"></h4>
+  <hr>
+  <div style="float:center;text-align:center;min-height:150px">
+  <img id="image3"/>
+  <p id="summery3"></p>
+  </div>
+  <hr>
+  <div class="col col-md-12">
+  <h4 class="alert-heading" style="text-align:center">Temperature</h4>
+  <table class="table table-sm">
+  <thead>
+    <tr>
+      <th scope="col" style="text-align:center">Max</th>
+      <th scope="col" style="text-align:center">Min</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td id='max_temp3' style="text-align:center"></td>
+      <td id='low_temp3' style="text-align:center"></td>
+    </tr>
+  </tbody>
+  </table>
+  </div>
+</div>
+</div>
+
+</div>
+</div>
+</div>
+   
+</body>
+</html>
